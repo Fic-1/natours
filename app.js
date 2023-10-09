@@ -5,13 +5,25 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log('Hello from the middleware 👋');
+  next();
+});
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
 const getAllTours = (req, res) => {
+  console.log(req.requestTime);
   res.status(200).json({
     staus: 'success',
+    requestedAt: req.requestTime,
     results: tours.length, //When sending array with multiple results QOL
     data: {
       tours: tours,
@@ -21,6 +33,7 @@ const getAllTours = (req, res) => {
 
 const getTour = (req, res) => {
   console.log(req.params);
+  req.reqTime = new Date().toISOString();
   const id = +req.params.id;
   const tour = tours.find((el) => el.id === id);
   // if (id > tours.length)
@@ -33,6 +46,7 @@ const getTour = (req, res) => {
 
   res.status(200).json({
     staus: 'success',
+    requestedAt: req.reqTime,
     data: {
       tour: tour,
     },
