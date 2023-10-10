@@ -4,12 +4,14 @@
   "description": "Learning node, express and mongoDB",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon ./server.js",
+    "start:prod": "NODE_ENV=production nodemon ./server.js"
   },
   "author": "Filip Brkovic",
   "license": "ISC",
   "dependencies": {
     "connect-timeout": "^1.9.0",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1"
