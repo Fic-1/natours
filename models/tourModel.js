@@ -50,6 +50,7 @@ const toursSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now(), // JS returns miliseconds --> Mongoose coverts to date
+    select: false,
   },
   startDates: [Date],
 });
