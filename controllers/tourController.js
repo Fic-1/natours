@@ -74,7 +74,7 @@ exports.createTour = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: 'Failed',
-      message: 'Invalid data sent!',
+      message: error,
     });
   }
 };
@@ -94,7 +94,7 @@ exports.updateTour = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: 'Failed',
-      message: 'Invalid data sent!',
+      message: error,
     });
   }
 };
@@ -110,7 +110,7 @@ exports.deleteTour = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: 'Failed',
-      message: 'Invalid data sent!',
+      message: error,
     });
   }
 };
@@ -148,7 +148,7 @@ exports.getTourStats = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: 'Failed',
-      message: 'Invalid data sent!',
+      message: error,
     });
   }
 };
@@ -197,7 +197,7 @@ exports.getMonthlyPlan = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'Failed',
-      message: 'err',
+      message: err,
     });
   }
 };
