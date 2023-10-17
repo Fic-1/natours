@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./server.js",
-    "start:prod": "NODE_ENV=production nodemon ./server.js"
+    "start:prod": "NODE_ENV=production nodemon ./server.js",
+    "debug": "ndb server.js"
   },
   "author": "Filip Brkovic",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "mongodb": "^6.1.0",
     "mongoose": "^5.10.19",
     "morgan": "^1.10.0",
+    "ndb": "^1.1.5",
     "nodemon": "^3.0.1",
     "slugify": "^1.6.6",
     "validator": "^13.11.0"
