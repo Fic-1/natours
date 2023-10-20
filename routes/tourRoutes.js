@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const tourController = require('../controllers/tourController');
+const authController = require('../controllers/authController');
 
 // router.param('id', tourController.checkID);
 
@@ -14,7 +15,7 @@ router
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(authController.protect, tourController.getAllTours)
   .post(tourController.createTour);
 router
   .route('/:id')

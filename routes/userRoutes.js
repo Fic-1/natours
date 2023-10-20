@@ -7,6 +7,7 @@ const router = express.Router();
 // SAME PATTERN AS FOR TOURS
 
 router.post('/signup', authController.signup);
+router.post('/login', authController.login);
 
 router
   .route('/')
