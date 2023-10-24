@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'User must have a name'],
+    required: [true, 'Passwords dont match!'],
     validate: {
       // Only gonna work on CREATE and SAVE !!!
       //Na updateu NE MOŽEMO koristiti findOneAndUpdate !!!
@@ -59,6 +59,13 @@ userSchema.pre('save', async function (next) {
 
   //Delete passwordConfirm field
   this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
