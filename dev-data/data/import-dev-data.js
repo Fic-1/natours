@@ -19,9 +19,7 @@ mongoose
   })
   .then(() => console.log('DB connection successful'));
 
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'),
-); //Radimo objekt iz JSON-a
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8')); //Radimo objekt iz JSON-a
 
 //IMPORT DATA INTO DATABASE
 

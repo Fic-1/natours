@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const User = require('./userModel');
 // const validator = require('validator');
 
 const toursSchema = new mongoose.Schema(
@@ -78,6 +79,39 @@ const toursSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      //* GeoJSON - embeded object
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+        message: 'Location can only be point',
+      },
+      coordinates: [Number], //*long, lat
+      address: String,
+      description: String,
+    },
+    locations: [
+      //! We always need to use array to specify more items
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+          message: 'Location can only be point',
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User', //!Doesn't need User model import
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -93,6 +127,12 @@ toursSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+// toursSchema.pre('save', async function (next) {
+//   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
+//   this.guides = await Promise.all(guidesPromises); //* Promise.all jer je rezultat array promise-a
+//   next();
+// });
 // toursSchema.pre('save', function (next) {
 //   console.log('Will save document...');
 //   next();
