@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const User = require('./userModel');
+// const User = require('./userModel');
 // const validator = require('validator');
 
 const toursSchema = new mongoose.Schema(
@@ -151,6 +151,16 @@ toursSchema.pre(/^find/, function (next) {
   this.start = Date.now();
   next();
 });
+
+toursSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+
+  next();
+});
+
 toursSchema.post(/^find/, function (docs, next) {
   console.log(`Query took: ${Date.now() - this.start} miliseconds`);
   // console.log(docs);
