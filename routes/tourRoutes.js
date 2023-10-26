@@ -1,10 +1,22 @@
 const express = require('express');
 
-const router = express.Router();
+const reviewRotuer = require('./reviewRoutes');
 const tourController = require('../controllers/tourController');
 const authController = require('../controllers/authController');
 
+const router = express.Router();
+
 // router.param('id', tourController.checkID);
+
+// router
+//   .route('/:tourid/reviews')
+//   .post(
+//     authController.protect,
+//     authController.restrictTo('user'),
+//     reviewController.createReview,
+//   );
+
+router.use('/:tourid/reviews', reviewRotuer); //! Za ovu adresu koristi reviewRouter; isto kao i mounting
 
 router.route('/tour-stats').get(tourController.getTourStats);
 router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);

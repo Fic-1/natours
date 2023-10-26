@@ -33,11 +33,17 @@ const reviewSchema = new mongoose.Schema(
 );
 
 reviewSchema.pre(/^find/, function (next) {
-  this.populate({ path: 'user', select: '-__v -passwordChangedAt' });
-  this.populate({ path: 'tour', select: 'name price difficulty' });
+  //   this.populate({ path: 'user', select: 'name photo' });
+  //   this.populate({ path: 'tour', select: 'name' });
+
+  this.populate({ path: 'user', select: 'name photo' });
 
   next();
 });
 
 const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;
+
+// POST /tour/2012516/reviews  //!Nested route reviews je child od tours resource
+// GET /tour/2012516/reviews  //!Get all reviews for specific tour
+// GET /tour/2012516/reviews/1264165  //!Get specific review for specific tour
