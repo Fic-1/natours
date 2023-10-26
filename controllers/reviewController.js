@@ -1,6 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
-const Review = require('./../models/reviewModel');
-const APIFeatures = require('./../utils/apiFeatures');
+const Review = require('../models/reviewModel');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
   //EXECUTE QUERY
@@ -21,7 +21,6 @@ exports.getAllReviews = catchAsync(async (req, res, next) => {
 });
 
 exports.createReview = catchAsync(async (req, res, next) => {
-  console.log(req.body);
   const newReview = await Review.create(req.body); //Returns a promise
   res.status(201).json({
     status: 'success',
