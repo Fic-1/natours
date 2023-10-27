@@ -11,16 +11,10 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res) => {
-  const users = await User.find();
-  res.status(200).json({
-    status: 'Success',
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   //* 1) Create error if user POSTs password data
@@ -55,26 +49,16 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user) {
-    return next(new AppError('No user found with that ID', 404));
-  }
-  res.status(200).json({
-    staus: 'success',
-    requestedAt: req.reqTime,
-    data: {
-      user: user,
-    },
+exports.createUser = (req, res) => {
+  //* Imamo signup rutu
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined, please use SignUp instead',
   });
-});
-// exports.createUser = (req, res) => { //* Imamo signup rutu
-//   res.status(500).json({
-//     status: 'error',
-//     message: 'This route is not yet defined',
-//   });
-// };
+};
+
+exports.getUser = factory.getOne(User);
+exports.getAllUsers = factory.getAll(User);
 
 //! Do NOT update passwords with this
 exports.updateUser = factory.updateOne(User);
