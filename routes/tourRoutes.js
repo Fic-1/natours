@@ -17,8 +17,12 @@ const router = express.Router();
 //   );
 
 router.use('/:tourid/reviews', reviewRotuer); //! Za ovu adresu koristi reviewRouter; isto kao i mounting
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours);
 
 router.route('/tour-stats').get(tourController.getTourStats);
+
 router
   .route('/monthly-plan/:year')
   .get(
@@ -28,8 +32,8 @@ router
   );
 
 router
-  .route('/top-5-cheap')
-  .get(tourController.aliasTopTours, tourController.getAllTours);
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
 
 router
   .route('/')

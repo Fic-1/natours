@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Tour = require('./tourModel');
+
+const catchAsync = require('../utils/catchAsync');
 // review / rating / createdAt / ref to tour / ref to user
 const reviewSchema = new mongoose.Schema(
   {
@@ -32,6 +35,8 @@ const reviewSchema = new mongoose.Schema(
   },
 );
 
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function (next) {
   //   this.populate({ path: 'user', select: 'name photo' });
   //   this.populate({ path: 'tour', select: 'name' });
@@ -41,7 +46,45 @@ reviewSchema.pre(/^find/, function (next) {
   next();
 });
 
+reviewSchema.statics.calcAverageRatings = async function (tourId) {
+  const stats = await this.aggregate([
+    //* U static metodi this pokazuje na trenutni model
+    {
+      $match: { tour: tourId },
+    },
+    {
+      $group: {
+        _id: '$tour',
+        nRatings: { $sum: 1 },
+        avgRating: { $avg: '$rating' },
+      },
+    },
+  ]);
+  // console.log(stats);
+
+  await Tour.findByIdAndUpdate(tourId, {
+    ratingsQuantity: stats[0] ? stats[0].nRatings : 0,
+    ratingsAverage: stats[0] ? stats[0].avgRating : 4.5,
+  });
+};
+
+reviewSchema.post('save', function () {
+  //* this points to current review ; this.constructor points on current model
+  this.constructor.calcAverageRatings(this.tour);
+});
+
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  //* Goal: get acces to a curren document
+  this.r = await this.findOne();
+});
+
+reviewSchema.post(/^findOneAnd/, async function () {
+  // this.r = await this.findOne(); //! Does not work here, query already executed
+  this.r.constructor.calcAverageRatings(this.r.tour);
+});
+
 const Review = mongoose.model('Review', reviewSchema);
+
 module.exports = Review;
 
 // POST /tour/2012516/reviews  //!Nested route reviews je child od tours resource
