@@ -1,4 +1,5 @@
 const Tour = require('../models/tourModel');
+const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getOverview = catchAsync(async (req, res, next) => {
@@ -13,8 +14,17 @@ exports.getOverview = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getTour = (req, res) => {
-  res.status(200).render('tour', {
-    title: 'The Forest Hiker',
+exports.getTour = catchAsync(async (req, res) => {
+  //* 1) Get data for requested tour (including revires and tour guides)
+  const tour = await Tour.findOne({ slug: req.params.tourSlug }).populate({
+    path: 'reviews',
+    fileds: 'review rating user',
   });
-};
+  const users = await User.find({ role: ['guide', 'lead-guide'] });
+  //* 2) build template
+  //* 3) Render the template using the data from 1)
+  res.status(200).render('tour', {
+    tour,
+    users,
+  });
+});
