@@ -73,6 +73,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
+  if (req.cookies.jwt) token = req.cookies.jwt;
   if (!token) {
     return next(
       new AppError('You are not logged in! Please log in to get access'),
@@ -194,4 +195,27 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await currentUser.save();
   //* 4) Log user in, send JWT
   createAndSendToken(currentUser, 200, res);
+});
+
+//! Only for rendered pages, there will be no error
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    //! Verify token
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET,
+    );
+
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) return next();
+
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+
+    //! THERE IS A LOGGED IN USER
+    res.locals.user = currentUser; //* Every pug template has acces to res.locals
+    return next();
+  }
+  next();
 });

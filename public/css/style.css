@@ -1322,3 +1322,8 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+.nav__el--logout {
+  border-radius: 50%;
+  scale: 0.5;
+}
