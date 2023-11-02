@@ -1,14 +1,23 @@
 /* eslint-disable */
-import axios from 'axios';
+import { login } from './login';
 import { displayMap } from './leaflet';
 
-const locations = JSON.parse(document.getElementById('map').dataset.locations);
+console.log('running index.js');
 
-displayMap(locations);
+const locData = document.getElementById('map');
+if (locData) {
+  const locations = JSON.parse(locData.dataset.locations);
+  displayMap(locations);
+}
 
-const form = document.querySelector('.form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  login(email, password);
-});
+const loginForm = document.querySelector('.form');
+
+if (loginForm) {
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    console.log(email, password);
+    login(email, password);
+  });
+}
