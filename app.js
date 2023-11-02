@@ -106,5 +106,17 @@ app.use(
   }),
 );
 
+if (process.env.NODE_ENV === 'development') {
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          'connect-src': ["'self'", 'ws://localhost:*'],
+        },
+      },
+    }),
+  );
+} else app.use(helmet());
+
 //* start up the server
 module.exports = app;

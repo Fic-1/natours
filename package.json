@@ -4,7 +4,12 @@
   "description": "Learning node, express and mongoDB",
   "main": "app.js",
   "targets": {
-    "main": false
+    "main": false,
+    "frontend": {
+      "source": "./public/js/index.js",
+      "distDir": "./public/dist/js",
+      "includeNodeModules": true
+    }
   },
   "scripts": {
     "start": "nodemon ./server.js",
