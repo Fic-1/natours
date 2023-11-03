@@ -1,8 +1,10 @@
 /* eslint-disable */
-import { login } from './login';
+import { login, logout } from './login';
 import { displayMap } from './leaflet';
 
-console.log('running index.js');
+// console.log('running index.js');
+
+const logOutBtn = document.querySelector('.nav__el--logoutbtn');
 
 const locData = document.getElementById('map');
 if (locData) {
@@ -17,7 +19,8 @@ if (loginForm) {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    console.log(email, password);
     login(email, password);
   });
 }
+
+if (logOutBtn) logOutBtn.addEventListener('click', logout);

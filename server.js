@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 process.on('uncaughtException', (err) => {
   console.log('UNHANDLED EXCEPTION! 💥 Shutting down...');
-  console.log('Error Name:',err.name,'Error Message:', err.message);
+  console.log('Error Name:', err.name, 'Error Message:', err.message);
   process.exit(1); //ITS IMPORTANT TO CLOSE APPLICATION
 });
 
