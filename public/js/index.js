@@ -1,21 +1,23 @@
 /* eslint-disable */
-import { displayMap } from './leaflet';
 import { login } from './login';
+import { displayMap } from './leaflet';
 
-//DOM ELEMENTS
-const leafletMap = document.getElementById('map');
-const loginForm = document.querySelector('.form')
-//VALUES
-const email = document.getElementById('email').value;
-const password = document.getElementById('password').value;
+console.log('running index.js');
 
-//DELEGATION
-IdleDeadline(leafletMap){
-const locations = JSON.parse(document.getElementById('map').dataset.locations);
-displayMap(locations);
+const locData = document.getElementById('map');
+if (locData) {
+  const locations = JSON.parse(locData.dataset.locations);
+  displayMap(locations);
 }
-if(loginForm)
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  login(email, password);
-});
+
+const loginForm = document.querySelector('.form');
+
+if (loginForm) {
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    console.log(email, password);
+    login(email, password);
+  });
+}
