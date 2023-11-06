@@ -1,13 +1,13 @@
 /* eslint-disable */
 import { login, logout } from './login';
 import { displayMap } from './leaflet';
-import { updateData } from './updateSettings';
-import { countDocuments } from '../../models/tourModel';
+import { updateSettings } from './updateSettings';
 
 // console.log('running index.js');
 
 const logOutBtn = document.querySelector('.nav__el--logoutbtn');
 const userDataForm = document.querySelector('.form-user-data');
+const userPasswordForm = document.querySelector('.form-user-password');
 
 const locData = document.getElementById('map');
 if (locData) {
@@ -32,5 +32,13 @@ if (userDataForm)
     e.preventDefault();
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    updateData(name, email);
+    updateSettings({ name, email }, 'data');
+  });
+if (userPasswordForm)
+  userPasswordForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    updateSettings({ passwordCurrent, password, passwordConfirm }, 'password');
   });

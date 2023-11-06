@@ -70,7 +70,7 @@ exports.logout = (req, res) => {
     httpOnly: true,
   });
   res.status(200).json({
-    status: 'success',
+    status: 'Success',
   });
 };
 
@@ -159,6 +159,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     );
   }
 });
+
 exports.resetPassword = catchAsync(async (req, res, next) => {
   //* 1) Get user based on the token
 
@@ -209,6 +210,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 });
 
 //! Only for rendered pages, there will be no error
+
 exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
