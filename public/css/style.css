@@ -1325,5 +1325,6 @@ body {
 
 .nav__el--logout {
   border-radius: 50%;
-  scale: 0.5;
+  height: 6vh;
+  margin-right: 10%;
 }
