@@ -33,21 +33,18 @@ module.exports = class Email {
   async send(template, subject) {
     //Send the actual email
     // 1) Render HTML based on a pug template
-    const html = pug.renderFile(
-      `${__dirname}/../views/emails/${template}.pug`,
-      {
-        firstName: this.firstName,
-        url: this.url,
-        subject,
-      },
-    );
+    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+      firstName: this.firstName,
+      url: this.url,
+      subject,
+    });
     // 2) Define email options
     const mailOptions = {
       from: this.from,
       to: this.to,
       subject,
       html,
-      text: htmlToText.fromString(html),
+      text: htmlToText.convert(html),
       // html:
     };
 
@@ -57,5 +54,12 @@ module.exports = class Email {
 
   async sendWelcome() {
     await this.send('welcome', 'Welcome to the Natours!');
+  }
+
+  async sendPasswordReset() {
+    await this.send(
+      'passwordReset',
+      'Your password reset token (valid for only 10 minutes)',
+    );
   }
 };

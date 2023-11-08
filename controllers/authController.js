@@ -43,9 +43,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
   });
-  const url = 0;
+  const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(newUser, url).sendWelcome();
-
+  console.log(url);
   createAndSendToken(newUser, 201, res);
 });
 
@@ -136,22 +136,16 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false }); //! Spremamo kako bi updatali DB
   //! Bez opcije za validaciju request ne prolazi i traži da upišemo sve potrebne podatke
   //* 3) Send it to user's email
-  const resetUrl = `${req.protocol}://${req.get(
-    'host',
-  )}/api/v1/users/resetPassword/${resetToken}`;
-
-  const message = `Forgot your password? Submit a PATCH request with your new password and password confirm to ${resetUrl}\n If you didn't forget your password, please ignore this email!`;
-
   try {
-    // await sendEmail({
-    //   email: user.email,
-    //   subject: 'Your password reset token (valid for 10 minutes)',
-    //   message,
-    // });
-    // res.status(200).json({
-    //   status: 'Success',
-    //   message: 'Token sent to email!',
-    // });
+    const resetUrl = `${req.protocol}://${req.get(
+      'host',
+    )}/api/v1/users/resetPassword/${resetToken}`;
+    await new Email(user, resetUrl).sendPasswordReset();
+
+    res.status(200).json({
+      status: 'Sucess',
+      message: 'Token sent to email',
+    });
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
