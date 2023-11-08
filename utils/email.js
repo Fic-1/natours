@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const catchAsync = require('./catchAsync');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
+const mg = require('nodemailer-mailgun-transport');
 
 // new Email(user, url).sendWelcome; //* How we are gone use Email class
 
@@ -15,8 +16,16 @@ module.exports = class Email {
 
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
-      //SENDGRID
-      return 1;
+      // MailGun
+      return nodemailer.createTransport(
+        mg({
+          auth: {
+            api_key: process.env.MAILGUN_API,
+            domain: process.env.MAILGUN_DOMAIN,
+          },
+          secure: false,
+        }),
+      );
     }
 
     return nodemailer.createTransport({
