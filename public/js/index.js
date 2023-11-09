@@ -3,12 +3,14 @@ import { login, logout } from './login';
 import { displayMap } from './leaflet';
 import { updateSettings } from './updateSettings';
 import { update } from '../../models/userModel';
+import { bookTour } from './stripe';
 
 // console.log('running index.js');
 
 const logOutBtn = document.querySelector('.nav__el--logoutbtn');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const bookBtn = document.getElementById('book-tour');
 
 const locData = document.getElementById('map');
 if (locData) {
@@ -58,4 +60,11 @@ if (userPasswordForm)
     document.getElementById('password-current').value = '';
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
+  });
+
+if (bookBtn)
+  bookBtn.addEventListener('click', (e) => {
+    e.target.textContent = 'Processing...';
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
   });

@@ -579,10 +579,12 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var _leaflet = require("./leaflet");
 var _updateSettings = require("./updateSettings");
 var _userModel = require("../../models/userModel");
+var _stripe = require("./stripe");
 // console.log('running index.js');
 const logOutBtn = document.querySelector(".nav__el--logoutbtn");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
+const bookBtn = document.getElementById("book-tour");
 const locData = document.getElementById("map");
 if (locData) {
     const locations = JSON.parse(locData.dataset.locations);
@@ -624,8 +626,13 @@ if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
 });
+if (bookBtn) bookBtn.addEventListener("click", (e)=>{
+    e.target.textContent = "Processing...";
+    const { tourId } = e.target.dataset;
+    (0, _stripe.bookTour)(tourId);
+});
 
-},{"./login":"7yHem","./leaflet":"xvuTT","./updateSettings":"l3cGY","../../models/userModel":"aoffs"}],"7yHem":[function(require,module,exports) {
+},{"./login":"7yHem","./leaflet":"xvuTT","./updateSettings":"l3cGY","../../models/userModel":"aoffs","./stripe":"10tSC"}],"7yHem":[function(require,module,exports) {
 /*eslint-disable */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "login", ()=>login);
@@ -72681,6 +72688,29 @@ var process = require("93b1634dfff89208");
     return bcrypt;
 });
 
-},{"93b1634dfff89208":"d5jf4","3d23559b6c48384d":"hagNj"}]},["dafvh","f2QDv"], "f2QDv", "parcelRequire11c7")
+},{"93b1634dfff89208":"d5jf4","3d23559b6c48384d":"hagNj"}],"10tSC":[function(require,module,exports) {
+/* eslint-disable */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bookTour", ()=>bookTour);
+var _axios = require("axios");
+var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _alerts = require("./alerts");
+const stripe = Stripe("pk_test_51OAC2FIZO6q4xj6WZJ7rYxMBHwmoUSN4PK4z5NV9rjlmnvdTsTFaFh0lESBAiL1MiOjxIVBMI1HMLwT4ihygAYAo00OS7vxkjH");
+const bookTour = async (tourId)=>{
+    try {
+        // 1) Get the session from the API endpoint
+        const session = await (0, _axiosDefault.default)(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
+        console.log(session);
+        // 2) Create checkout form + charge credit card
+        await stripe.redirectToCheckout({
+            sessionId: session.data.session.id
+        });
+    } catch (err) {
+        console.error(err);
+        (0, _alerts.showAlert)("error", err);
+    }
+};
+
+},{"axios":"jo6P5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./alerts":"6Mcnf"}]},["dafvh","f2QDv"], "f2QDv", "parcelRequire11c7")
 
 //# sourceMappingURL=index.js.map
