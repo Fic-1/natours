@@ -580,6 +580,7 @@ var _leaflet = require("./leaflet");
 var _updateSettings = require("./updateSettings");
 var _userModel = require("../../models/userModel");
 var _stripe = require("./stripe");
+var _alerts = require("./alerts");
 const logOutBtn = document.querySelector(".nav__el--logoutbtn");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
@@ -629,8 +630,10 @@ if (bookBtn) bookBtn.addEventListener("click", (e)=>{
     const { tourId } = e.target.dataset;
     (0, _stripe.bookTour)(tourId);
 });
+const alertMessage = document.querySelector("body").dataset.alert;
+if (alert) (0, _alerts.showAlert)("Success", alertMessage, 20);
 
-},{"./login":"7yHem","./leaflet":"xvuTT","./updateSettings":"l3cGY","../../models/userModel":"aoffs","./stripe":"10tSC"}],"7yHem":[function(require,module,exports) {
+},{"./login":"7yHem","./leaflet":"xvuTT","./updateSettings":"l3cGY","../../models/userModel":"aoffs","./stripe":"10tSC","./alerts":"6Mcnf"}],"7yHem":[function(require,module,exports) {
 /*eslint-disable */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "login", ()=>login);
