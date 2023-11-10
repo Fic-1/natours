@@ -1,22 +1,24 @@
 {
   "name": "natours",
   "version": "1.0.0",
+  "source": "/public/js/index.js",
   "description": "Learning node, express and mongoDB",
   "main": "app.js",
   "targets": {
     "main": false,
     "frontend": {
       "source": "./public/js/index.js",
-      "distDir": "./public/dist/js",
+      "distDir": "./public/js/bundled",
       "includeNodeModules": true
     }
   },
+  "browserslist": "> 0.25%",
   "scripts": {
     "start": "nodemon ./server.js",
     "start:prod": "NODE_ENV=production nodemon ./server.js",
     "debug": "ndb server.js",
     "watch:js": "parcel serve ./public/js/index.js --dist-dir ./public/js/bundled",
-    "build:js": "parcel build ./public/js/index.js --dist-dir ./public/js/bundled"
+    "build:js": "parcel build"
   },
   "author": "Filip Brkovic",
   "license": "ISC",

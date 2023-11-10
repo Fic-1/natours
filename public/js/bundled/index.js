@@ -580,7 +580,6 @@ var _leaflet = require("./leaflet");
 var _updateSettings = require("./updateSettings");
 var _userModel = require("../../models/userModel");
 var _stripe = require("./stripe");
-// console.log('running index.js');
 const logOutBtn = document.querySelector(".nav__el--logoutbtn");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
@@ -604,7 +603,6 @@ if (userDataForm) userDataForm.addEventListener("submit", (e)=>{
     form.append("name", document.getElementById("name").value);
     form.append("email", document.getElementById("email").value);
     form.append("photo", document.getElementById("photo").files[0]);
-    console.log(form);
     (0, _updateSettings.updateSettings)(form, "data");
 // const name = document.getElementById('name').value;
 // const email = document.getElementById('email').value;
@@ -644,7 +642,7 @@ const login = async (email, password)=>{
     try {
         const res = await (0, _axiosDefault.default)({
             method: "POST",
-            url: "http://127.0.0.1:3000/api/v1/users/login",
+            url: "/api/v1/users/login",
             data: {
                 email,
                 password
@@ -661,13 +659,12 @@ const login = async (email, password)=>{
     }
 };
 const logout = async ()=>{
-    console.log("logout");
     try {
         const res = await (0, _axiosDefault.default)({
             method: "GET",
-            url: "http://127.0.0.1:3000/api/v1/users/logout"
+            url: "/api/v1/users/logout"
         });
-        if (res.data.status === "success") location.reload(true);
+        if (res.data.status === "Success") location.reload(true);
     } catch (error) {
         (0, _alerts.showAlert)("error", "Error logging out! Try again.");
     }
@@ -5104,7 +5101,7 @@ var _axiosDefault = parcelHelpers.interopDefault(_axios);
 var _alerts = require("./alerts");
 const updateSettings = async (data, type)=>{
     try {
-        const url = type === "password" ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword" : "http://127.0.0.1:3000/api/v1/users/updateMe";
+        const url = type === "password" ? "/api/v1/users/updateMyPassword" : "/api/v1/users/updateMe";
         const res = await (0, _axiosDefault.default)({
             method: "PATCH",
             url,
@@ -72699,8 +72696,7 @@ const stripe = Stripe("pk_test_51OAC2FIZO6q4xj6WZJ7rYxMBHwmoUSN4PK4z5NV9rjlmnvdT
 const bookTour = async (tourId)=>{
     try {
         // 1) Get the session from the API endpoint
-        const session = await (0, _axiosDefault.default)(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
-        console.log(session);
+        const session = await (0, _axiosDefault.default)(`/api/v1/bookings/checkout-session/${tourId}`);
         // 2) Create checkout form + charge credit card
         await stripe.redirectToCheckout({
             sessionId: session.data.session.id
