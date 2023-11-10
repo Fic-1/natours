@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -25,6 +26,18 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 //* 1) GLOBAL MIDDLEWARES
+//? Implementing CORS
+
+app.use(cors()); //! Radi samo za simple req GET POST
+//* Access-Control-Allow-Origin = *
+
+//* api.natours.com natours.com
+// app.use(cors({
+//   origin: 'https://www.natours.com' //? dodamo samo tu str u cors
+// }))
+
+app.options('*', cors()); //? options <-- HTTP method __ Pre flight phase
+
 //? Serving static files
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public')));
