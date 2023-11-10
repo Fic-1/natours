@@ -631,7 +631,7 @@ if (bookBtn) bookBtn.addEventListener("click", (e)=>{
     (0, _stripe.bookTour)(tourId);
 });
 const alertMessage = document.querySelector("body").dataset.alert;
-if (alert) (0, _alerts.showAlert)("Success", alertMessage, 20);
+if (alertMessage) (0, _alerts.showAlert)("Success", alertMessage, 20);
 
 },{"./login":"7yHem","./leaflet":"xvuTT","./updateSettings":"l3cGY","../../models/userModel":"aoffs","./stripe":"10tSC","./alerts":"6Mcnf"}],"7yHem":[function(require,module,exports) {
 /*eslint-disable */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
