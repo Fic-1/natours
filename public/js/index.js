@@ -5,8 +5,6 @@ import { updateSettings } from './updateSettings';
 import { update } from '../../models/userModel';
 import { bookTour } from './stripe';
 
-// console.log('running index.js');
-
 const logOutBtn = document.querySelector('.nav__el--logoutbtn');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
@@ -37,7 +35,6 @@ if (userDataForm)
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
-    console.log(form);
 
     updateSettings(form, 'data');
     // const name = document.getElementById('name').value;
